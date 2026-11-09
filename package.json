@@ -2,9 +2,11 @@
   "name": "lapormas_restapi_kelompok",
   "version": "1.0.0",
   "description": "Bagian ini berisi schema PostgreSQL dan contoh konfigurasi koneksi database untuk backend Express.js.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "test-db": "node test-connection.js"
   },
   "keywords": [],
   "author": "",

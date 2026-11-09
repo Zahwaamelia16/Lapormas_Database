@@ -70,4 +70,70 @@ Sesuaikan path `require('./src/config/db')` dengan lokasi file konfigurasi datab
 - `reports` 1–N `report_images` dan `report_updates`.
 - `reports` N–N `responsible_units` melalui `report_assignments`.
 
-Catatan: API enam endpoint untuk tabel `reports` merupakan bagian route/controller. File ini menyiapkan database dan koneksi, bukan keseluruhan implementasi endpoint.
+## 6. REST API tabel `reports`
+
+### Struktur project
+
+```
+app.js                              # entry point Express.js
+src/config/db.js                    # koneksi PostgreSQL (pg Pool)
+src/routes/reportRoutes.js          # daftar 6 route /api/reports
+src/controllers/reportController.js # logika query ke database
+database/lapormas.sql               # schema + data kategori & status
+database/seed.sql                   # data contoh users, areas, reports
+LAPORMAS_Reports_API.postman_collection.json
+```
+
+### Menjalankan
+
+```bash
+npm install
+# jalankan database/lapormas.sql lalu database/seed.sql di database PostgreSQL
+npm run test-db   # cek koneksi database
+npm start         # server di http://localhost:3000
+```
+
+Nama database harus sama dengan `DB_NAME` di file `.env`.
+
+### Daftar endpoint
+
+| No | Method | URL | Fungsi |
+|----|--------|-----|--------|
+| 1 | GET | `/api/reports` | Mendapatkan semua laporan |
+| 2 | GET | `/api/reports/:id` | Mendapatkan laporan berdasarkan ID |
+| 3 | GET | `/api/reports/search?title=jalan` | Mencari laporan berdasarkan judul (sebagian kata, tidak membedakan huruf besar/kecil) |
+| 4 | POST | `/api/reports` | Membuat laporan baru |
+| 5 | PUT | `/api/reports/:id` | Memperbarui laporan (cukup kirim kolom yang ingin diubah) |
+| 6 | DELETE | `/api/reports/:id` | Menghapus laporan |
+
+Tambahan: `GET /api/db-check` untuk mengecek koneksi database.
+
+Contoh body POST (Postman → Body → raw → JSON):
+
+```json
+{
+  "user_id": 1,
+  "category_id": 1,
+  "status_id": 1,
+  "area_id": 1,
+  "title": "Sampah menumpuk di pasar",
+  "description": "Sampah belum diangkut selama 3 hari dan mulai berbau.",
+  "location": "Pasar Ketintang, Surabaya",
+  "latitude": -7.312,
+  "longitude": 112.728
+}
+```
+
+Kolom wajib: `user_id`, `category_id`, `status_id`, `area_id`, `title`, `description`, `location`. `latitude` dan `longitude` opsional, tetapi harus diisi berpasangan. ID yang dipakai harus sudah ada di tabel terkait (karena itu jalankan `seed.sql` terlebih dahulu).
+
+Contoh body PUT:
+
+```json
+{ "status_id": 3, "title": "Sampah menumpuk di pasar (sedang diangkut)" }
+```
+
+Kode respons: `200` berhasil, `201` data dibuat, `400` input tidak valid / foreign key tidak ditemukan, `404` data tidak ditemukan, `500` error server.
+
+### Pengujian di Postman
+
+Import file `LAPORMAS_Reports_API.postman_collection.json` ke Postman (Import → pilih file). Urutan request sudah disesuaikan dengan urutan screenshot pada laporan: POST → GET semua → GET by ID → PUT → DELETE → GET by judul. Pastikan ID pada PUT/DELETE adalah ID laporan yang dibuat oleh POST.
