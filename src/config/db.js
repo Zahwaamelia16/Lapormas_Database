@@ -1,6 +1,11 @@
 require('dotenv').config();
 
-const { Pool } = require('pg');
+const { Pool, types } = require('pg');
+
+// BIGINT (20) dan NUMERIC (1700) dikembalikan pg sebagai string secara default.
+// Diubah menjadi angka agar respons JSON lebih rapi (report_id: 1, bukan "1").
+types.setTypeParser(20, (value) => parseInt(value, 10));
+types.setTypeParser(1700, (value) => parseFloat(value));
 
 const pool = new Pool({
     host: process.env.DB_HOST,

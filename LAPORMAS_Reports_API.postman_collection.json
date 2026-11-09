@@ -1,0 +1,171 @@
+{
+  "info": {
+    "name": "LAPORMAS - Reports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. POST - Buat laporan baru",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"user_id\": 1,\n  \"category_id\": 1,\n  \"status_id\": 1,\n  \"area_id\": 1,\n  \"title\": \"Sampah menumpuk di pasar\",\n  \"description\": \"Sampah belum diangkut selama 3 hari dan mulai berbau.\",\n  \"location\": \"Pasar Ketintang, Surabaya\",\n  \"latitude\": -7.312,\n  \"longitude\": 112.728\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "2. GET - Semua laporan",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports"
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. GET - Laporan berdasarkan ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. PUT - Perbarui laporan",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports/3",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports",
+            "3"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status_id\": 3,\n  \"title\": \"Sampah menumpuk di pasar (sedang diangkut)\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "5. DELETE - Hapus laporan",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports/3",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports",
+            "3"
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. GET - Cari berdasarkan judul",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports/search?title=jalan",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "title",
+              "value": "jalan"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cek koneksi database",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/db-check",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "db-check"
+          ]
+        }
+      }
+    }
+  ]
+}
